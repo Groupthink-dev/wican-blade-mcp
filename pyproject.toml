@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wican_blade_mcp"]
+
+[project]
+name = "wican-blade-mcp"
+version = "0.1.0"
+description = "Universal vehicle monitoring via meatPi WiCAN Pro OBD-II adapter — standard PIDs over MQTT, raw CAN bus decoding, and diagnostic trouble codes."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "Groupthink Dev" }]
+keywords = ["mcp", "obd2", "can-bus", "wican", "vehicle", "mqtt"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+]
+dependencies = [
+    "fastmcp>=2.0.0",
+    "paho-mqtt>=2.0.0",
+    "cantools>=39.0.0",
+    "pydantic>=2.0.0",
+]
+
+[project.scripts]
+wican-blade-mcp = "wican_blade_mcp.server:main"
+
+[dependency-groups]
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-mock>=3.14.0",
+    "pytest-cov>=6.0.0",
+]
+dev = [
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+    "pre-commit>=3.6.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = ["e2e: end-to-end tests requiring a live WiCAN device"]

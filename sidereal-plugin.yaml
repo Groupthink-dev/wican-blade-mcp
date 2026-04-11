@@ -1,0 +1,109 @@
+name: wican-blade-mcp
+version: "0.1.0"
+description: "Universal vehicle monitoring via meatPi WiCAN Pro OBD-II adapter"
+author: groupthink-dev
+licence: MIT
+tier: certified
+contract: vehicle-v1
+
+services:
+  vehicle:
+    vehicles: wican_vehicles
+    state: wican_state
+    diagnostics: wican_diagnostics
+    battery: wican_battery
+    trip: wican_trip
+    can_read: wican_can_read
+    dtc_clear: wican_dtc_clear
+    can_send: wican_can_send
+
+setup:
+  icon: "\U0001F697"
+  blurb: "Monitor any OBD-II vehicle via WiCAN Pro — standard PIDs, diagnostics, and raw CAN over MQTT."
+  auth_model: credentials
+  complexity: moderate
+  fields:
+    - key: MQTT_BROKER
+      label: "MQTT Broker"
+      type: text
+      required: true
+      placeholder: "localhost"
+      help: "Hostname or IP of your MQTT broker"
+    - key: MQTT_PORT
+      label: "MQTT Port"
+      type: text
+      required: false
+      placeholder: "1883"
+    - key: MQTT_USERNAME
+      label: "MQTT Username"
+      type: text
+      required: false
+    - key: MQTT_PASSWORD
+      label: "MQTT Password"
+      type: text
+      required: false
+      secret: true
+    - key: WICAN_DEVICE_ID
+      label: "Device ID"
+      type: text
+      required: false
+      help: "WiCAN device ID. Auto-discovered if omitted."
+    - key: WICAN_DBC_PATH
+      label: "DBC File Path"
+      type: text
+      required: false
+      help: "Path to opendbc DBC file for manufacturer-specific decoding."
+    - key: WICAN_WRITE_ENABLED
+      label: "Enable Write Operations"
+      type: boolean
+      required: false
+      help: "Allow DTC clearing and raw CAN sending."
+  test:
+    endpoint: "mqtt://{MQTT_BROKER}:{MQTT_PORT}"
+    auth_style: credentials
+  prerequisites:
+    - "meatPi WiCAN Pro adapter"
+    - "OBD-II vehicle (1996+ US, 2001+ EU, 2005+ AU)"
+    - "WiFi coverage at vehicle location"
+    - "MQTT broker (Mosquitto, Home Assistant, or cloud)"
+  help:
+    - label: "WiCAN Firmware Docs"
+      url: "https://meatpihq.github.io/wican-fw/"
+    - label: "Buy WiCAN Pro"
+      url: "https://www.meatpi.com/products/wican-pro"
+    - label: "opendbc CAN Databases"
+      url: "https://github.com/commaai/opendbc"
+
+install:
+  runtime: uv
+  package: wican-blade-mcp
+  command: wican-blade-mcp
+
+env:
+  - name: MQTT_BROKER
+    description: "MQTT broker hostname or IP"
+    default: "localhost"
+  - name: MQTT_PORT
+    description: "MQTT broker port"
+    default: "1883"
+  - name: MQTT_USERNAME
+    description: "MQTT broker username"
+  - name: MQTT_PASSWORD
+    description: "MQTT broker password"
+    secret: true
+  - name: WICAN_DEVICE_ID
+    description: "WiCAN device ID for topic filtering"
+  - name: WICAN_DBC_PATH
+    description: "Path to DBC file for CAN decoding"
+  - name: WICAN_WRITE_ENABLED
+    description: "Enable write operations (DTC clear, CAN send)"
+    default: "false"
+
+requires:
+  sidereal: ">=0.3.0"
+
+conformance:
+  required: "0/6"
+  recommended: "0/1"
+  gated: "0/3"
+  last_tested: null
