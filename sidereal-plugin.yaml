@@ -4,6 +4,8 @@ description: "Universal vehicle monitoring via meatPi WiCAN Pro OBD-II adapter"
 author: groupthink-dev
 licence: MIT
 tier: certified
+author_type: first-party
+readiness: experimental
 contract: vehicle-v1
 
 services:
