@@ -1,5 +1,5 @@
 name: wican-blade-mcp
-version: "0.1.0"
+version: "0.1.1"
 description: "Universal vehicle monitoring via meatPi WiCAN Pro OBD-II adapter"
 author: groupthink-dev
 licence: MIT
